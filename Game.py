@@ -39,6 +39,6 @@ class Game:
             pause = pygame.image.load("./assets/buttons/pause.png")
             restart = pygame.image.load("./assets/buttons/reset.png")
 
-            screen.blit(play, (32, 32))
-            screen.blit(pause, (64, 32))
-            screen.blit(restart, (96, 32))
+            screen.blit(play, (32, 0))
+            screen.blit(pause, (64, 0))
+            screen.blit(restart, (96, 0))

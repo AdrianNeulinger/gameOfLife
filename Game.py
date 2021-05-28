@@ -31,6 +31,14 @@ class Game:
         for i in range(20):
             rect = pygame.Rect(self.tile_size * i, self.tile_size * i, self.tile_size, self.tile_size)
             rect2 = pygame.Rect(self.tile_size * i, self.tile_size * (19-i), self.tile_size, self.tile_size)
-
+            
             pygame.draw.rect(screen, (255, 255, 255), rect)
             pygame.draw.rect(screen, (255, 255, 255), rect2)
+
+            play = pygame.image.load("./assets/buttons/play.png")
+            pause = pygame.image.load("./assets/buttons/pause.png")
+            restart = pygame.image.load("./assets/buttons/reset.png")
+
+            screen.blit(play, (32, 32))
+            screen.blit(pause, (64, 32))
+            screen.blit(restart, (96, 32))

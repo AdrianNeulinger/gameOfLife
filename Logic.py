@@ -1,8 +1,9 @@
 import pygame
+import random as rndm
 
 
 class Logic:
-    def __init__(self, xCoor, yCoor, tile_size):
+    def __init__(self, xCoor, yCoor, tile_size, random=False):
         self.coordinates = []
         self.xCoor = xCoor
         self.yCoor = yCoor
@@ -10,7 +11,10 @@ class Logic:
         for x in range(self.xCoor):
             self.coordinates.append([])
             for y in range(self.yCoor):
-                self.coordinates[x].append(0)
+                if random:
+                    self.coordinates[x].append(rndm.randint(0, 1))
+                else:
+                    self.coordinates[x].append(0)
 
     def update(self, events, running):
         if running:

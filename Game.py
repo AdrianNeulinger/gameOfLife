@@ -7,7 +7,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.tile_size = 32
-        self.size = self.width, self.height = self.tile_size * 20, self.tile_size * 21
+        self.size = self.width, self.height = self.tile_size * 20, self.tile_size * 22
         self.background_color = 50, 50, 50
         self.screen = pygame.display.set_mode(self.size)
         self.clock = pygame.time.Clock()
@@ -29,7 +29,6 @@ class Game:
 
     def update(self, delta_time, events):
         self.logic.update(events, self.running)
-
 
 
     def draw(self, screen):

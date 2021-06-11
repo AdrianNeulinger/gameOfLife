@@ -26,7 +26,7 @@ class Logic:
         else:
             try:
                 for event in events:
-                    if event.type == pygame.MOUSEBUTTONUP:
+                    if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                         pos = pygame.mouse.get_pos()
                         tile_x = int(pos[0] / self.tile_size)
                         tile_y = int(pos[1] / self.tile_size)

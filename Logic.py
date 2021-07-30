@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import pygame
 import random as rndm
 
@@ -5,16 +7,15 @@ import random as rndm
 class Logic:
     def __init__(self, xCoor, yCoor, tile_size, random=False):
         self.coordinates = []
+        self.updated_map = []
         self.xCoor = xCoor
         self.yCoor = yCoor
         self.tile_size = tile_size
         for x in range(self.xCoor):
             self.coordinates.append([])
             for y in range(self.yCoor):
-                if random:
-                    self.coordinates[x].append(rndm.randint(0, 1))
-                else:
-                    self.coordinates[x].append(0)
+                self.coordinates[x].append(0)
+        self.updated_map = deepcopy(self.coordinates)
 
     def update(self, events, running):
         if running:
@@ -22,10 +23,14 @@ class Logic:
                 for y in range(self.yCoor):
                     alive_neighbours = self.getNeighbours(x, y)
                     current_state = self.coordinates[x][y]
+                    if alive_neighbours > 0:
+                        pass
+                        # import pdb;pdb.set_trace()
                     if current_state == 1 and (alive_neighbours < 2 or alive_neighbours > 3):
-                        self.coordinates[x][y] = 0
+                        self.updated_map[x][y] = 0
                     elif current_state == 0 and (alive_neighbours == 3):
-                        self.coordinates[x][y] = 1
+                        self.updated_map[x][y] = 1
+            self.coordinates = deepcopy(self.updated_map)
 
         else:
             try:
@@ -41,6 +46,7 @@ class Logic:
                             self.coordinates[tile_x][tile_y] = 0
             except IndexError:
                 pass
+            self.updated_map = deepcopy(self.coordinates)
 
     def getNeighbours(self, xCoor, yCoor):
         aliveNeighbours = 0

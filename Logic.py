@@ -1,39 +1,41 @@
 from copy import deepcopy
 
 import pygame
-import random as rndm
 
 
 class Logic:
-    def __init__(self, xCoor, yCoor, tile_size, random=False):
+    def __init__(self, x_coor, y_coor, tile_size):
+        # initialize Logic
         self.coordinates = []
         self.updated_map = []
-        self.xCoor = xCoor
-        self.yCoor = yCoor
+        self.x_coor = x_coor
+        self.y_coor = y_coor
         self.tile_size = tile_size
-        for x in range(self.xCoor):
+        # fill initial game state with '0'
+        for x in range(self.x_coor):
             self.coordinates.append([])
-            for y in range(self.yCoor):
+            for y in range(self.y_coor):
                 self.coordinates[x].append(0)
         self.updated_map = deepcopy(self.coordinates)
 
     def update(self, events, running):
+        # check if game is running
         if running:
-            for x in range(self.xCoor):
-                for y in range(self.yCoor):
-                    alive_neighbours = self.getNeighbours(x, y)
+            for x in range(self.x_coor):
+                for y in range(self.y_coor):
+                    # calculate next state for each cell
+                    alive_neighbours = self.get_neighbours(x, y)
                     current_state = self.coordinates[x][y]
-                    if alive_neighbours > 0:
-                        pass
-                        # import pdb;pdb.set_trace()
                     if current_state == 1 and (alive_neighbours < 2 or alive_neighbours > 3):
                         self.updated_map[x][y] = 0
                     elif current_state == 0 and (alive_neighbours == 3):
                         self.updated_map[x][y] = 1
+            # deepcopy needed for updating cells
             self.coordinates = deepcopy(self.updated_map)
 
         else:
             try:
+                # flip cell state on click to set new patterns
                 for event in events:
                     if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                         pos = pygame.mouse.get_pos()
@@ -48,20 +50,21 @@ class Logic:
                 pass
             self.updated_map = deepcopy(self.coordinates)
 
-    def getNeighbours(self, xCoor, yCoor):
-        aliveNeighbours = 0
-        for xOffset in range (-1, 2):
-            for yOffset in range(-1, 2):
-                if xOffset == 0 and yOffset == 0:
+    def get_neighbours(self, x_coor, y_coor):
+        alive_neighbours = 0
+        for x_offset in range(-1, 2):
+            for y_offset in range(-1, 2):
+                if x_offset == 0 and y_offset == 0:
                     continue
-                check_x = (xCoor + xOffset) % (len(self.coordinates))
-                check_y = (yCoor + yOffset) % len(self.coordinates[0])
-                aliveNeighbours += self.coordinates[check_x][check_y]
-        return aliveNeighbours
+                check_x = (x_coor + x_offset) % (len(self.coordinates))
+                check_y = (y_coor + y_offset) % len(self.coordinates[0])
+                alive_neighbours += self.coordinates[check_x][check_y]
+        return alive_neighbours
 
     def draw(self, screen):
-        for x in range(self.xCoor):
-            for y in range(self.yCoor):
+        # draw rect for each cell, if it's alive
+        for x in range(self.x_coor):
+            for y in range(self.y_coor):
                 cell = pygame.Rect(
                     self.tile_size * x + 1,
                     self.tile_size * y + 1,
@@ -74,12 +77,11 @@ class Logic:
                     pygame.draw.rect(screen, (0, 0, 0), cell)
 
     def __str__(self):
+        # string representation of game state
         returnstring = ''
-        for y in range(self.yCoor):
+        for y in range(self.y_coor):
             row = ''
-            for x in range(self.xCoor):
+            for x in range(self.x_coor):
                 row += ' {}'.format(self.coordinates[x][y])
             returnstring += row + '\n'
         return returnstring
-
-
